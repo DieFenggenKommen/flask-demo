@@ -6,7 +6,7 @@ from db import db
 from Product import Product
 
 # Configure the logging package from the logging ini file; defined as an environment variable
-logging.config.fileConfig('./config/logging.ini', disable_existing_loggers=False)
+logging.config.fileConfig('/config/logging.ini', disable_existing_loggers=False)
 
 # Get a logger for our module
 log = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ def get_database_url():
     """
     # Load our database configuration
     config = configparser.ConfigParser()
-    config.read('./config/db.ini')
+    config.read('/config/db.ini')
     database_configuration = config['mysql']
     host = database_configuration['host']
     username = database_configuration['username']
@@ -49,8 +49,8 @@ def get_products():
         return 'An exception occurred while retrieving all products', 500
 
 
-# curl -v http://localhost:5000/product/1
-@app.route('/product/<int:id>')
+# curl -v http://localhost:5000/products/1
+@app.route('/products/<int:id>')
 def get_product(id):
     log.debug(f'GET /product/{id}')
 
@@ -66,8 +66,8 @@ def get_product(id):
 
 
 
-# curl --header "Content-Type: application/json" --request POST --data '{"name": "Product 3"}' -v http://localhost:5000/product
-@app.route('/product', methods=['POST'])
+# curl --header "Content-Type: application/json" --request POST --data '{"name": "Product 3"}' -v http://localhost:5000/products
+@app.route('/products', methods=['POST'])
 def post_product():
 
     # Retrieve the product from the request body
@@ -88,8 +88,8 @@ def post_product():
         return f'An exception occurred while creating product with name: {product.name}', 500
 
 
-# curl --header "Content-Type: application/json" --request PUT --data '{"name": "Updated Product 2"}' -v http://localhost:5000/product/2
-@app.route('/product/<int:id>', methods=['PUT'])
+# curl --header "Content-Type: application/json" --request PUT --data '{"name": "Updated Product 2"}' -v http://localhost:5000/products/2
+@app.route('/products/<int:id>', methods=['PUT'])
 def put_product(id):
     log.debug(f'PUT /product/{id}')
     try:
@@ -113,8 +113,8 @@ def put_product(id):
 
 
 
-# curl --request DELETE -v http://localhost:5000/product/2
-@app.route('/product/<int:id>', methods=['DELETE'])
+# curl --request DELETE -v http://localhost:5000/products/2
+@app.route('/products/<int:id>', methods=['DELETE'])
 def delete_product(id):
     log.debug(f'DELETE /product/{id}')
     try:
